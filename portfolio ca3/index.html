@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sejal Lende | Data & Business Analytics Portfolio</title>
+
+    <style>
+        /* Your CSS */
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <b>Sejal Lende</b>
+
+        <button>Home</button>
+        <button>About</button>
+        <button>Skills</button>
+        <button>Projects</button>
+        <button>Career</button>
+        <button>Certifications</button>
+        <button>Contributions</button>
+        <button>Contact</button>
+    </nav>
+
+    <main>
+
+        <!-- Home -->
+        <section id="home">
+            <h1>Hi, I'm Sejal <span>Lende</span></h1>
+
+            <p>
+                Computer Science undergraduate specializing in
+                Data Science. I turn raw data into clear,
+                actionable insights with SQL, Power BI and Excel.
+            </p>
+
+            <button>See my projects</button>
+            <button>View certificates</button>
+            <button>Contact me</button>
+        </section>
+
+        <!-- About -->
+        <section id="about">
+            <h2>About Me</h2>
+            <p>
+                I am a Computer Science undergraduate specializing
+                in Data Science and Business Analytics.
+            </p>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills">
+            <h2>Skills</h2>
+
+            <div class="card">
+                <h3>Technical Skills</h3>
+                <p>SQL</p>
+                <p>Power BI</p>
+                <p>Excel</p>
+                <p>Python</p>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects">
+            <h2>Projects</h2>
+
+            <div class="card">
+                <h3>Data Analytics Projects</h3>
+                <p>
+                    Projects involving data analysis,
+                    visualization and business insights.
+                </p>
+            </div>
+        </section>
+
+        <!-- Career -->
+        <section id="career">
+            <h2>Career</h2>
+        </section>
+
+        <!-- Certifications -->
+        <section id="certs">
+            <h2>Certifications</h2>
+        </section>
+
+        <!-- Contributions -->
+        <section id="contrib">
+            <h2>Contributions</h2>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+            <h2>Contact</h2>
+
+            <p>
+                Email:
+                <a href="mailto:sejallende72@gmail.com">
+                    sejallende72@gmail.com
+                </a>
+            </p>
+
+            <p>
+                GitHub:
+                <a href="https://github.com/Sejallende-1541"
+                   target="_blank">
+                    Sejallende-1541
+                </a>
+            </p>
+
+            <p>
+                LinkedIn:
+                <a href="https://www.linkedin.com/in/sejal-lende"
+                   target="_blank">
+                    sejal-lende
+                </a>
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Sejal Lende · Nagpur, India
+    </footer>
+
+    <script>
+        // Navigation
+        const buttons =
+            document.querySelectorAll("nav button");
+
+        const sections =
+            document.querySelectorAll("main section");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                sections.forEach(section => {
+                    section.style.display = "none";
+                });
+
+                const id =
+                    button.textContent
+                    .toLowerCase()
+                    .replace("certifications", "certs")
+                    .replace("contributions", "contrib");
+
+                document.getElementById(id).style.display = "block";
+            });
+        });
+    </script>
+
+</body>
+</html>
