@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #f8fafc, #e0f2fe);
+            padding: 40px 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 95%;
+            margin: auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #dbeafe;
+            font-size: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 21px;
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #334155;
+        }
+
+        input,
+        select {
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .load-btn {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Status */
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .success {
+            color: #047857;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        /* JSON */
+        .json-box {
+            background: #0f172a;
+            color: #a7f3d0;
+            padding: 20px;
+            border-radius: 12px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        .salary {
+            color: #047857;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>👨‍💼 Employee Management System</h1>
+        <p>Employee Details using JavaScript & JSON</p>
+    </div>
+
+
+    <!-- EMPLOYEE FORM -->
+    <div class="card">
+
+        <h2>📝 Enter Employee Details</h2>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Employee ID</label>
+                <input
+                    type="text"
+                    id="employeeId"
+                    placeholder="EMP001"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Employee Name</label>
+                <input
+                    type="text"
+                    id="employeeName"
+                    placeholder="Enter employee name"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Department</label>
+                <select id="department">
+                    <option value="">Select Department</option>
+                    <option>IT</option>
+                    <option>HR</option>
+                    <option>Finance</option>
+                    <option>Marketing</option>
+                    <option>Sales</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Salary</label>
+                <input
+                    type="number"
+                    id="salary"
+                    placeholder="Enter salary"
+                >
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button class="add-btn" onclick="addEmployee()">
+                ➕ Add Employee
+            </button>
+
+            <button class="load-btn" onclick="loadEmployees()">
+                📂 Load Employees
+            </button>
+
+            <button class="clear-btn" onclick="clearData()">
+                🗑 Clear
+            </button>
+
+        </div>
+
+        <div id="status"></div>
+
+    </div>
+
+
+    <!-- JSON OUTPUT -->
+    <div class="card">
+
+        <h2>🔄 JSON Representation</h2>
+
+        <div id="jsonOutput" class="json-box">
+Employee JSON data will appear here...
+        </div>
+
+    </div>
+
+
+    <!-- EMPLOYEE TABLE -->
+    <div class="card">
+
+        <h2>👥 Employee Records</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+
+                <tbody id="employeeTableBody">
+
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Click "Load Employees" to display records.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+        Employee Management System | JavaScript • JSON • Fetch API
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       EMPLOYEES.JSON DATA
+       Stored inside this single HTML file
+       ===================================================== */
+
+    const employeeJSON = `[
+        {
+            "employeeId": "EMP001",
+            "employeeName": "Aarav Sharma",
+            "department": "IT",
+            "salary": 65000
+        },
+        {
+            "employeeId": "EMP002",
+            "employeeName": "Priya Patel",
+            "department": "HR",
+            "salary": 58000
+        },
+        {
+            "employeeId": "EMP003",
+            "employeeName": "Rahul Deshmukh",
+            "department": "Finance",
+            "salary": 72000
+        },
+        {
+            "employeeId": "EMP004",
+            "employeeName": "Sneha Joshi",
+            "department": "Marketing",
+            "salary": 60000
+        }
+    ]`;
+
+
+    let employees = [];
+
+
+    /* =====================================================
+       LOAD EMPLOYEES USING FETCH()
+       ===================================================== */
+
+    function loadEmployees() {
+
+        /*
+           Create a temporary JSON file from the
+           JSON data stored inside this HTML file.
+        */
+
+        const blob = new Blob(
+            [employeeJSON],
+            { type: "application/json" }
+        );
+
+        const jsonURL = URL.createObjectURL(blob);
+
+
+        // Using fetch() as required in the question
+        fetch(jsonURL)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                employees = data;
+
+                displayEmployees(employees);
+
+                showJSON(employees);
+
+                showStatus(
+                    "Employee records loaded successfully!",
+                    "success"
+                );
+
+                URL.revokeObjectURL(jsonURL);
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                showStatus(
+                    "Unable to load employee data.",
+                    "error"
+                );
+
+            });
+    }
+
+
+    /* =====================================================
+       ADD EMPLOYEE
+       ===================================================== */
+
+    function addEmployee() {
+
+        const employeeId =
+            document.getElementById("employeeId").value.trim();
+
+        const employeeName =
+            document.getElementById("employeeName").value.trim();
+
+        const department =
+            document.getElementById("department").value;
+
+        const salary =
+            document.getElementById("salary").value;
+
+
+        // Validation
+        if (
+            employeeId === "" ||
+            employeeName === "" ||
+            department === "" ||
+            salary === ""
+        ) {
+
+            showStatus(
+                "Please fill all employee details.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // Create JavaScript object
+        const employee = {
+
+            employeeId: employeeId,
+
+            employeeName: employeeName,
+
+            department: department,
+
+            salary: Number(salary)
+
+        };
+
+
+        // Add employee to array
+        employees.push(employee);
+
+
+        // Convert JavaScript object into JSON
+        showJSON(employees);
+
+
+        // Display employee in table
+        displayEmployees(employees);
+
+
+        showStatus(
+            "Employee added successfully!",
+            "success"
+        );
+
+
+        // Clear form
+        document.getElementById("employeeId").value = "";
+        document.getElementById("employeeName").value = "";
+        document.getElementById("department").value = "";
+        document.getElementById("salary").value = "";
+    }
+
+
+    /* =====================================================
+       DISPLAY JSON USING JSON.stringify()
+       ===================================================== */
+
+    function showJSON(data) {
+
+        const jsonData =
+            JSON.stringify(data, null, 4);
+
+        document.getElementById("jsonOutput")
+            .textContent = jsonData;
+    }
+
+
+    /* =====================================================
+       DISPLAY EMPLOYEES IN HTML TABLE
+       ===================================================== */
+
+    function displayEmployees(data) {
+
+        const tableBody =
+            document.getElementById("employeeTableBody");
+
+        tableBody.innerHTML = "";
+
+
+        if (data.length === 0) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty">
+                        No employee records found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        data.forEach(employee => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    <strong>${employee.employeeId}</strong>
+                </td>
+
+                <td>
+                    ${employee.employeeName}
+                </td>
+
+                <td>
+                    ${employee.department}
+                </td>
+
+                <td class="salary">
+                    ₹${Number(employee.salary)
+                        .toLocaleString("en-IN")}
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(row);
+
+        });
+    }
+
+
+    /* =====================================================
+       CLEAR DATA
+       ===================================================== */
+
+    function clearData() {
+
+        employees = [];
+
+        document.getElementById("jsonOutput")
+            .textContent =
+            "Employee JSON data will appear here...";
+
+
+        document.getElementById("employeeTableBody")
+            .innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty">
+                        No employee records available.
+                    </td>
+                </tr>
+            `;
+
+
+        showStatus(
+            "All employee data cleared.",
+            "success"
+        );
+    }
+
+
+    /* =====================================================
+       STATUS MESSAGE
+       ===================================================== */
+
+    function showStatus(message, type) {
+
+        const status =
+            document.getElementById("status");
+
+        status.textContent = message;
+
+        status.className = type;
+    }
+
+</script>
+
+</body>
+</html>
